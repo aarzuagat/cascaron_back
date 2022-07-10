@@ -16,8 +16,10 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('cost_price');
-            $table->float('sell_price');
+            $table->string('photo');
+            $table->string('tag');
+            $table->double('cost_price');
+            $table->double('sell_price');
             $table->foreignId('category_id')->constrained();
             $table->text('description')->nullable();
             $table->float('stock');

@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         $data = [
             ['name' => 'Admin', 'role_id' => 1, 'email' => 'admin@admin.love', 'password' => Hash::make('admin123')]
         ];
-        foreach ($data as $user){
-            User::create($user);
+        foreach ($data as $useri){
+            User::create($useri);
         }
 
     }

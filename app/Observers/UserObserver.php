@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use Faker\Factory;
 
 class UserObserver
 {
@@ -20,7 +21,9 @@ class UserObserver
 
     public function generateToken(): string
     {
-        return time() . rand((int)pow(10, 20), (int)pow(10, 30));
+        $faker = Factory::create();
+
+        return time().$faker->uuid;
     }
 
     /**
