@@ -14,9 +14,9 @@ class CreateTableProductStock extends Migration
     public function up()
     {
         //esta es para cuando aumente/disminuya el almacen
-        Schema::create('table_product_stock', function (Blueprint $table) {
+        Schema::create('product_stock', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->float('quantity');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateTableProductStock extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_product_stock');
+        Schema::dropIfExists('product_stock');
     }
 }

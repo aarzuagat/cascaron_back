@@ -13,7 +13,7 @@ class CreateTableProductCategories extends Migration
      */
     public function up()
     {
-        Schema::create('table_product_categories', function (Blueprint $table) {
+        Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('category_id')->constrained();
@@ -28,6 +28,6 @@ class CreateTableProductCategories extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_product_categories');
+        Schema::dropIfExists('product_categories');
     }
 }

@@ -22,7 +22,9 @@ class CreateProductsTable extends Migration
             $table->double('sell_price');
             $table->foreignId('category_id')->constrained();
             $table->text('description')->nullable();
+            $table->text('barcode')->nullable();
             $table->float('stock');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
