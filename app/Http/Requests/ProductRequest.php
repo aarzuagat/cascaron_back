@@ -38,13 +38,6 @@ class ProductRequest extends FormRequest
 
     public function messages()
     {
-        return [
-            'id.required' => 'El id del producto es un campo obligatorio',
-            'id.exists' => 'El id del producto debe corresponder a un id válido',
-            'stock.required' => 'El stock es un campo obligatorio',
-            'stock.numeric' => 'El stock del producto debe ser un campo numérico',
-            'stock.lte' => 'El stock del producto debe ser menor o igual a la cantidad disponible',
-        ];
     }
 
     public function failedValidation($validator)
