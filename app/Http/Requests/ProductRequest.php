@@ -16,19 +16,19 @@ class ProductRequest extends FormRequest
 
     public function rules()
     {
-        $stock = Product::find($this->id);
-        return [
-            'id' => [
-                'required',
-                'integer',
-                'exists:products,id',
-            ],
-            'stock' => [
-                'required',
-                'numeric',
-                "lte:{$stock->stock}"
-            ]
-        ];
+//        $stock = Product::find($this->id);
+//        return [
+//            'id' => [
+//                'required',
+//                'integer',
+//                'exists:products,id',
+//            ],
+//            'stock' => [
+//                'required',
+//                'numeric',
+//                "lte:{$stock->stock}"
+//            ]
+//        ];
     }
 
     protected function prepareForValidation()
