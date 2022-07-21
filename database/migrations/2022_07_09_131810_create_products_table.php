@@ -18,12 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('photo');
             $table->string('tag');
-            $table->double('cost_price');
-            $table->double('sell_price');
             $table->foreignId('category_id')->constrained();
             $table->text('description')->nullable();
-            $table->text('barcode')->nullable();
-            $table->float('stock');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

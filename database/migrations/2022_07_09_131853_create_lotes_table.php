@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableProductTags extends Migration
+class CreateLotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class CreateTableProductTags extends Migration
      */
     public function up()
     {
-        Schema::create('product_tags', function (Blueprint $table) {
+        Schema::create('lotes', function (Blueprint $table) {
+            $table->id();
+            $table->double('cost_price');
+            $table->double('sell_price');
+            $table->double('quantity');
+            $table->date('buy_date');
             $table->foreignId('product_id')->constrained();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('created_by')->constrained('users');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +32,6 @@ class CreateTableProductTags extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_tags');
+        Schema::dropIfExists('lotes');
     }
 }

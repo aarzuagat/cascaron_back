@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LoteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -45,7 +46,7 @@ Route::group([
     Route::apiResource('orders', OrderController::class)->except('index');
     Route::apiResource('products', ProductController::class)->except('index');
     Route::apiResource('notifications', NotificationController::class)->except('index');
-    Route::apiResource('stock', StockController::class);
+    Route::apiResource('lotes', LoteController::class);
     Route::post('sellProduct', [ProductController::class,'sellProduct']);
 });
 

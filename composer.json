@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.7",
+        "ramsey/uuid": "^4.2",
         "salmanzafar/laravel-crud-generator": "^1.0",
         "tymon/jwt-auth": "^1.0"
     },

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -19,15 +20,14 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $path = $this->storeImage($request);
         $data = $request->all();
+        $path = $this->storeImage($request);
         if ($path) {
             $data['photo'] = $path;
         }
         $product = Product::create($data);
-        $stock = $request->stock;
         $user = auth()->user();
-        (new StockController())->manageStock($product, $stock, $user);
+        (new LoteController())->manageStock($product, $user, $request->quantity, $request->cost_price, $request->sell_price);
         return response(['data' => $product], 201);
     }
 
@@ -81,10 +81,10 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($request->id);
         $stock = $request->stock;
-        $stockReal =  $product->stock - $stock;
+        $stockReal = $product->stock - $stock;
         $product->stock = $stockReal;
         $user = auth()->user();
-        (new StockController())->manageStock($product, -1*$stock, $user);
+        (new StockController())->manageStock($product, -1 * $stock, $user);
         $product->save();
         return response(['data' => $product], 200);
     }
