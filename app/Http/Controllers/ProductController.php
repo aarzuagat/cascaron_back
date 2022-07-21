@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\SellRequest;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    const relations = ['category'];
+    const relations = ['category', 'lotes.tags'];
 
 
     public function index()
@@ -77,15 +78,10 @@ class ProductController extends Controller
         return response(['data' => null], 204);
     }
 
-    public function sellProduct(ProductRequest $request)
+    public function sellProduct(SellRequest $request)
     {
-        $product = Product::findOrFail($request->id);
-        $stock = $request->stock;
-        $stockReal = $product->stock - $stock;
-        $product->stock = $stockReal;
         $user = auth()->user();
-        (new StockController())->manageStock($product, -1 * $stock, $user);
-        $product->save();
-        return response(['data' => $product], 200);
+        list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
+        return response(['data' => $message], $ended ? 200 : 400);
     }
 }

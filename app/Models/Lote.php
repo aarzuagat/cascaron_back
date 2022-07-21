@@ -9,6 +9,6 @@ class Lote extends Model
     protected $guarded = ['id'];
 
     public function tags(){
-        return $this->hasMany(Tag::class);
+        return $this->hasMany(Tag::class)->whereNull('deleted_at');
     }
 }
