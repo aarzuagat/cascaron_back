@@ -93,6 +93,6 @@ class ProductController extends Controller
         $lote = Lote::with(['tagsAll','product','creator'])->findOrFail($data['lote_id']);
 
         $pdf = PDF::loadView('pdf.tags', compact('lote'));
-        return $pdf->download('tags.pdf');
+        return $pdf->download("lote-{$lote->id}.pdf");
     }
 }

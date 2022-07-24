@@ -13,9 +13,20 @@
         .footer .page-number:after {
             content: counter(page);
         }
-        td, th {
+
+        .table tbody tr td, .table thead td th {
             vertical-align: middle;
+            text-align: center;
         }
+
+        .footer {
+            position: fixed;
+            right: 0px;
+            bottom: 10px;
+            text-align: center;
+            border-top: 1px solid black;
+        }
+
 
 
 
@@ -26,7 +37,7 @@
 
 <div class="row">
     <div class="col-12 text-center">
-        <h5>Listado de las etiquetas del producto {{$lote->product['name']}}</h5>
+        <h5>Listado de las etiquetas del producto "{{$lote->product['name']}}"</h5>
     </div>
     <div class="col-12">
         <table class="table table-bordered table-sm">
@@ -45,7 +56,15 @@
             </tr>
             <tr>
                 <th>Cantidad total</th>
-                <th>{{$lote->quantity_real}}</th>
+                <th>{{$lote->quantityReal}}</th>
+            </tr>
+            <tr>
+                <th>Cantidad en stock</th>
+                <th>{{$lote->quantity}}</th>
+            </tr>
+            <tr>
+                <th>Cantidad vendida</th>
+                <th>{{$lote->quantityReal - $lote->quantity}}</th>
             </tr>
             <tr>
                 <th>Agregado por</th>
@@ -54,26 +73,56 @@
             </thead>
         </table>
     </div>
-    <div class="col-12">
-        <ol>
-            @foreach($lote->tagsAll as $tag)
-                <li>{{$tag['tag']}}</li>
-            @endforeach
-        </ol>
-    </div>
-    Reporte generado por {{config('app.name')}}
-    <div class="col-12">
-        <footer>
-            <div class="footer text-center" style="position: absolute; bottom: 0; font-size: 12px">
-                <small>
-                    Reporte generado por {{config('app.name')}} el {{date('d/m/Y h:iA ')}}
-                </small>
-                <div style="text-align: right">
-                    Página <span class="page-number"> </span>
-                </div>
+    @if(count($lote->tagsAll))
+        <div class="col-12">
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th class="text-center">No.</th>
+                    <th class="text-center">Código de barras</th>
+                    <th class="text-center">Código numérico</th>
+                    <th class="text-center">¿Vendido?</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @foreach($lote->tagsAll as $key=>$tag)
+                    <tr>
+                        <td>{{$key+1}}</td>
+                        <td>
+                            <img src="data:image/png;base64,{{$tag['barcode'] }}" height="60" width="180"/>
+                        </td>
+                        <td>  {{$tag['tag']}}</td>
+                        <td>
+                            @if($tag['sold_by'])
+                                {{date('d/m/Y H:i',strtotime($tag['deleted_at']))}}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="col-12 text-center text-danger">
+            <h6>No hay etiquetas disponibles para este producto</h6>
+        </div>
+    @endif
+
+    <footer>
+        <div class="footer text-center">
+            <small>
+                Reporte generado por {{config('app.name')}} el {{date('d/m/Y h:iA ')}}
+            </small>
+            <div style="text-align: right">
+                <span>Página <span class="page-number"> </span></span>
+
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
+
 </div>
 </body>
 </html>

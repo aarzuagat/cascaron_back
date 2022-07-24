@@ -30,7 +30,7 @@ class Lote extends Model
 
     public function quantity()
     {
-        return Tag::where('lote_id', $this->id)->whereNull('deleted_at')->count();
+        return $this->tags()->count();
     }
 
     public function getQuantityAttribute()
@@ -40,11 +40,11 @@ class Lote extends Model
 
     public function quantityReal()
     {
-        return Tag::where('lote_id', $this->id)->count();
+        return $this->tagsAll()->count();
     }
 
     public function getQuantityRealAttribute()
     {
-        return $this->quantity();
+        return $this->quantityReal();
     }
 }
