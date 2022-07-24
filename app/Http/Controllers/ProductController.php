@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Requests\SellRequest;
 use App\Models\Lote;
 use App\Models\Product;
+use App\Models\StockOperation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -63,11 +64,11 @@ class ProductController extends Controller
             $data['photo'] = $path;
         }
         $stock = $request->stock;
-        if ($product->stock !== $stock) {
-            $stock = $stock - $product->stock;
-            $user = auth()->user();
-            (new StockController())->manageStock($product, $stock, $user);
-        }
+//        if ($product->stock !== $stock) {
+//            $stock = $stock - $product->stock;
+//            $user = auth()->user();
+//            (new LoteController())->manageStock($product, $stock, $user);
+//        }
         $product->update($data);
         return response(['data' => $product], 200);
     }
@@ -84,13 +85,41 @@ class ProductController extends Controller
     public function sellProduct(SellRequest $request)
     {
         $user = auth()->user();
-        list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
+        $product = Product::findOrFail($request->product['id']);
+        if ($product['tag'] === 'Todas las unidades')
+            list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
+        else {
+            $lote = Lote::findOrFail($request->lote['id']);
+            $quantity = (double)$request->quantity;
+            if ($lote->quantity >= $quantity) {
+                $lote->decrement('quantity', $quantity);
+                $message = 'Stock actualizado correctamente';
+                $ended = true;
+            } else {
+                $message = 'Stock insuficiente para ser actualizado';
+                $ended = false;
+            }
+            $this->storeRawDiscount($quantity,$lote->id);
+        }
         return response(['data' => $message], $ended ? 200 : 400);
     }
 
-    public function downloadTag(Request $request){
+    public function storeRawDiscount($quantity,$lote_id)
+    {
+        $data = [
+            'quantity' => $quantity,
+            'lote_id' => $lote_id,
+            'tag' => "Lote-{$lote_id}",
+            'deleted_at' => Carbon::now(),
+            'sold_by' => auth()->user()->id,
+        ];
+        StockOperation::create($data);
+    }
+
+    public function downloadTag(Request $request)
+    {
         $data = $request->all();
-        $lote = Lote::with(['tagsAll','product','creator'])->findOrFail($data['lote_id']);
+        $lote = Lote::with(['tagsAll', 'product', 'creator'])->findOrFail($data['lote_id']);
 
         $pdf = PDF::loadView('pdf.tags', compact('lote'));
         return $pdf->download("lote-{$lote->id}.pdf");

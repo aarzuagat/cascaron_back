@@ -27,7 +27,7 @@ class SellRequest extends FormRequest
         return [
             'product' => 'required',
             'product.id' => 'exists:products,id',
-            'sell' => 'required|array',
+            'sell' => 'required_if:product.lite,false|array',
             'sell.*.code.id' => 'exists:tags,id',
         ];
     }

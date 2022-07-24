@@ -25,7 +25,7 @@ class TagController extends Controller
         $tags = [];
         $product = Product::with('category')->find($lote->product_id);
         $const = Tag::count();
-        foreach (range(1, $quantity) as $index) {
+        foreach (range(1, (double)$quantity) as $index) {
             $hex = dechex($const + $index);
             $data = [
                 'lote_id' => $lote->id,

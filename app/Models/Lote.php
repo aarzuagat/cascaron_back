@@ -8,43 +8,55 @@ class Lote extends Model
 {
     protected $guarded = ['id'];
     protected $appends = [
-        'quantity',
+        'quantityStock',
         'quantityReal',
     ];
 
-    public function tags(){
+    public function tags()
+    {
         return $this->tagsAll()->whereNull('deleted_at');
     }
 
-    public function tagsAll(){
+    public function tagsAll()
+    {
         return $this->hasMany(Tag::class);
     }
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function creator(){
-        return $this->belongsTo(User::class,'created_by');
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function quantity()
+    public function quantityStock()
     {
-        return $this->tags()->count();
+        if ($this->product()->first()->tag === 'Todas las unidades')
+            return $this->tags()->count();
+        return $this->quantity;
     }
 
-    public function getQuantityAttribute()
+    public function getQuantityStockAttribute()
     {
-        return $this->quantity();
+        return $this->quantityStock();
     }
 
     public function quantityReal()
     {
-        return $this->tagsAll()->count();
+        if ($this->product()->first()->tag === 'Todas las unidades')
+            return $this->tagsAll()->count();
+        return $this->quantity + $this->lote_operations()->sum('quantity');
     }
 
     public function getQuantityRealAttribute()
     {
         return $this->quantityReal();
+    }
+
+    public function lote_operations(){
+        return $this->hasMany(StockOperation::class);
     }
 }

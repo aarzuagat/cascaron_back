@@ -60,11 +60,11 @@
             </tr>
             <tr>
                 <th>Cantidad en stock</th>
-                <th>{{$lote->quantity}}</th>
+                <th>{{$lote->quantityStock}}</th>
             </tr>
             <tr>
                 <th>Cantidad vendida</th>
-                <th>{{$lote->quantityReal - $lote->quantity}}</th>
+                <th>{{$lote->quantityReal - $lote->quantityStock}}</th>
             </tr>
             <tr>
                 <th>Agregado por</th>

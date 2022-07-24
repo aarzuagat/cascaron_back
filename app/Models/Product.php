@@ -27,8 +27,12 @@ class Product extends Model
 
     public function quantity()
     {
-        $lotes = $this->lotes()->pluck('id')->toArray();
-        return Tag::whereIn('lote_id', $lotes)->whereNull('deleted_at')->count();
+        if ($this->tag === 'Todas las unidades') {
+            $lotes = $this->lotes()->pluck('id')->toArray();
+            return Tag::whereIn('lote_id', $lotes)->whereNull('deleted_at')->count();
+        } else {
+            return $this->lotes()->sum('quantity');
+        }
     }
 
     public function getQuantityAttribute()

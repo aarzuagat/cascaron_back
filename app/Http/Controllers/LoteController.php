@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class LoteController extends Controller
 {
-    const relations = ['lotes.tags', 'lotes.tagsAll','category'];
+    const relations = ['lotes.tags', 'lotes.tagsAll', 'category','lotes.product'];
 
     public function manageStock($product, $user, $quantity, $cost_price, $sell_price, $buy_date = null)
     {
@@ -22,7 +22,8 @@ class LoteController extends Controller
             'created_by' => $user->id,
         ];
         $lote = Lote::create($data);
-        (new TagController())->store($lote);
+        if ($product['tag'] === 'Todas las unidades')
+            (new TagController())->store($lote);
         return $lote;
     }
 
