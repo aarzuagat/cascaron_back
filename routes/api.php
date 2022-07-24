@@ -48,6 +48,7 @@ Route::group([
     Route::apiResource('notifications', NotificationController::class)->except('index');
     Route::apiResource('lotes', LoteController::class);
     Route::post('sellProduct', [ProductController::class,'sellProduct']);
+    Route::post('tag-download', [ProductController::class,'downloadTag']);
 });
 
 Route::get('categories', [CategoryController::class,'index']);

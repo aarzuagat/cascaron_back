@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\SellRequest;
+use App\Models\Lote;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -83,5 +86,13 @@ class ProductController extends Controller
         $user = auth()->user();
         list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
         return response(['data' => $message], $ended ? 200 : 400);
+    }
+
+    public function downloadTag(Request $request){
+        $data = $request->all();
+        $lote = Lote::with(['tagsAll','product','creator'])->findOrFail($data['lote_id']);
+
+        $pdf = PDF::loadView('pdf.tags', compact('lote'));
+        return $pdf->download('tags.pdf');
     }
 }

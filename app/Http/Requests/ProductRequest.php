@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -16,12 +17,16 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'photo' => 'required|image|max:10240',
+            'photo' => [
+                'image',
+                'max:10240',
+                'required_if:id,null'
+            ],
             'tag' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'quantity' => 'numeric',
-            'cost_price' => 'numeric',
-            'sell_price' => 'numeric',
+            'quantity' => 'numeric|required_if:id,null',
+            'cost_price' => 'numeric|required_if:id,null',
+            'sell_price' => 'numeric|required_if:id,null',
         ];
 
     }

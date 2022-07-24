@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class LoteController extends Controller
 {
-    const relations = ['lotes.tags'];
+    const relations = ['lotes.tags', 'category'];
 
     public function manageStock($product, $user, $quantity, $cost_price, $sell_price, $buy_date = null)
     {
@@ -23,6 +23,7 @@ class LoteController extends Controller
         ];
         $lote = Lote::create($data);
         (new TagController())->store($lote);
+        return $lote;
     }
 
     public function index()
@@ -33,7 +34,13 @@ class LoteController extends Controller
 
     public function store(LoteRequest $request)
     {
-        $lote = Lote::create($request->all());
+        $data = $request->all();
+        $product = Product::find($data['id']);
+        $user = auth()->user();
+        $quantity = $data['quantity'];
+        $cost_price = $data['cost_price'];
+        $sell_price = $data['sell_price'];
+        $lote = $this->manageStock($product, $user, $quantity, $cost_price, $sell_price);
         return response(['data' => $lote], 201);
     }
 
