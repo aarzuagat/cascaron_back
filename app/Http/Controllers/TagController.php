@@ -90,6 +90,7 @@ class TagController extends Controller
             array_push($filtered, $tag['id']);
         }
         if (Tag::whereIn('id', $filtered)->whereNotNull('deleted_at')->count()) {
+            Log::debug(Tag::whereIn('id', $filtered)->whereNotNull('deleted_at')->pluck('id')->toArray());
             return [false, 'Existen productos vendidos. Por favor, seleccione de nuevo'];
         }
         try {
