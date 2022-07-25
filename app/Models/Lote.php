@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Lote extends Model
 {
@@ -36,6 +37,7 @@ class Lote extends Model
     {
         if ($this->product()->first()->tag === 'Todas las unidades')
             return $this->tags()->count();
+        Log::debug("hereee");
         return $this->quantity;
     }
 
