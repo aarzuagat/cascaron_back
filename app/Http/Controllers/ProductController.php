@@ -89,22 +89,31 @@ class ProductController extends Controller
         if ($product['tag'] === 'Todas las unidades')
             list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
         else {
-            $lote = Lote::findOrFail($request->lote['id']);
+            if ($request['lote']) {
+                $lotes = Lote::whereId($request['lote'])->get();
+            } else
+                $lotes = Lote::whereProductId($request->product['id'])->get();
             $quantity = (double)$request->quantity;
-            if ($lote->quantity >= $quantity) {
-                $lote->decrement('quantity', $quantity);
+            foreach ($lotes as $lote) {
+                if ($lote->quantity >= $quantity) {
+                    $lote->decrement('quantity', $quantity);
+                    $this->storeRawDiscount($quantity, $lote->id);
+                    $quantity = 0;
+                    break;
+                }
+            }
+            if ($quantity == 0) {
                 $message = 'Stock actualizado correctamente';
                 $ended = true;
             } else {
                 $message = 'Stock insuficiente para ser actualizado';
                 $ended = false;
             }
-            $this->storeRawDiscount($quantity,$lote->id);
         }
         return response(['data' => $message], $ended ? 200 : 400);
     }
 
-    public function storeRawDiscount($quantity,$lote_id)
+    public function storeRawDiscount($quantity, $lote_id)
     {
         $data = [
             'quantity' => $quantity,
