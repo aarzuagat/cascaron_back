@@ -57,4 +57,3 @@ Route::get('roles', [RoleController::class,'index']);
 Route::get('orders', [OrderController::class,'index']);
 Route::get('products', [ProductController::class,'index']);
 Route::get('notifications', [NotificationController::class,'index']);
-Route::apiResource('stockoperations', 'StockOperationController'); 

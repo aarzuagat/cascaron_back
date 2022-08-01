@@ -92,22 +92,35 @@ class ProductController extends Controller
             if ($request['lote']) {
                 $lotes = Lote::whereId($request['lote'])->get();
             } else
-                $lotes = Lote::whereProductId($request->product['id'])->get();
-            $quantity = (double)$request->quantity;
-            foreach ($lotes as $lote) {
-                if ($lote->quantity >= $quantity) {
-                    $lote->decrement('quantity', $quantity);
-                    $this->storeRawDiscount($quantity, $lote->id);
-                    $quantity = 0;
-                    break;
-                }
-            }
-            if ($quantity == 0) {
-                $message = 'Stock actualizado correctamente';
-                $ended = true;
-            } else {
+                $lotes = Lote::whereProductId($request->product['id'])->get()->sortByDesc('quantityStock');
+            $sumTotal = $lotes->sum('quantityStock');
+            $quantity = (float)$request->quantity;
+            if ($quantity > $sumTotal) {
                 $message = 'Stock insuficiente para ser actualizado';
                 $ended = false;
+            } else {
+                foreach ($lotes as $lote) {
+                    $stock = $lote->quantityStock;
+                    if ($quantity > 0 && $stock > 0) {
+                        if ($stock >= $quantity) {
+                            $lote->decrement('quantity', $quantity);
+                            $this->storeRawDiscount($quantity, $lote->id);
+                            $quantity = 0;
+                        } elseif ($stock < $quantity) {
+                            Log::debug($stock);
+                            $lote->decrement('quantity', $stock);
+                            $this->storeRawDiscount($stock, $lote->id);
+                            $quantity -= $stock;
+                        }
+                    }
+                }
+                if ($quantity === 0) {
+                    $message = 'Stock actualizado correctamente';
+                    $ended = true;
+                } else {
+                    $message = 'Stock insuficiente para ser actualizado';
+                    $ended = false;
+                }
             }
         }
         return response(['data' => $message], $ended ? 200 : 400);

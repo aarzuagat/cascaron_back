@@ -37,7 +37,6 @@ class Lote extends Model
     {
         if ($this->product()->first()->tag === 'Todas las unidades')
             return $this->tags()->count();
-        Log::debug("hereee");
         return $this->quantity;
     }
 
