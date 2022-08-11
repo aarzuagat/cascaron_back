@@ -140,6 +140,7 @@ class ProductController extends Controller
 
     public function downloadTag(Request $request)
     {
+        set_time_limit(10000);
         $data = $request->all();
         $lote = Lote::with(['tagsAll', 'product', 'creator'])->findOrFail($data['lote_id']);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
@@ -95,5 +96,15 @@ class AuthController extends Controller
         return auth()->user();
     }
 
+
+    public function resetBD()
+    {
+        try {
+            Artisan::call('migrate:fresh --seed');
+        } catch (\Exception $e) {
+            return response(['data' => $e->getMessage()], 500);
+        }
+        return response(['data' => "Base de datos reiniciada exitosamente"]);
+    }
 
 }

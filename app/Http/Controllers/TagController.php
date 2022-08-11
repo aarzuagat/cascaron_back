@@ -29,7 +29,7 @@ class TagController extends Controller
             $hex = dechex($const + $index);
             $data = [
                 'lote_id' => $lote->id,
-                'tag' => $this->generaTag($product, false, $product->category_id . '-' . ($hex))
+                'tag' => $this->generaTag($product, false, $product->category_id  . ($hex))
             ];
             array_push($tags, $data);
         }
@@ -90,7 +90,6 @@ class TagController extends Controller
             array_push($filtered, $tag['id']);
         }
         if (Tag::whereIn('id', $filtered)->whereNotNull('deleted_at')->count()) {
-            Log::debug(Tag::whereIn('id', $filtered)->whereNotNull('deleted_at')->pluck('id')->toArray());
             return [false, 'Existen productos vendidos. Por favor, seleccione de nuevo'];
         }
         try {
