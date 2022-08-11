@@ -19,6 +19,6 @@
 <div id="q-app" v-cloak>
 </div>
 <script src=/js/vendor.9f6dbb2b.js></script>
-<script src=/js/app.efec0226.js></script>
+<script src=/js/app.2df27356.js></script>
 </body>
 </html>
