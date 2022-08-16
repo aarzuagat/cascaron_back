@@ -29,7 +29,7 @@ class TagController extends Controller
             $hex = dechex($const + $index);
             $data = [
                 'lote_id' => $lote->id,
-                'tag' => $this->generaTag($product, false, $product->category_id  . ($hex))
+                'tag' => $this->generaTag($product, false, $product->category_id . ($hex))
             ];
             array_push($tags, $data);
         }
@@ -85,20 +85,32 @@ class TagController extends Controller
     public function sellProductByTag($sellings, $user)
     {
         $filtered = [];
+        $lotes = [];
         foreach ($sellings as $selling) {
             $tag = $selling['code'];
             array_push($filtered, $tag['id']);
+            if (array_key_exists($tag['lote_id'], $lotes))
+                $lotes[$tag['lote_id']] = $lotes[$tag['lote_id']] + 1;
+            else
+                $lotes[$tag['lote_id']] = 1;
         }
         if (Tag::whereIn('id', $filtered)->whereNotNull('deleted_at')->count()) {
             return [false, 'Existen productos vendidos. Por favor, seleccione de nuevo'];
         }
         try {
+            $stock_operation = null;
+            foreach (array_unique($lotes) as $key => $lote) {
+                $stock = (new ProductController())->storeRawDiscount($lote, $key);
+                if (!$stock_operation) $stock_operation = $stock;
+            }
+
             Tag::whereIn('id', $filtered)->update(
                 [
-                    'deleted_at' => Carbon::now(),
-                    'sold_by' => $user->id
+                    'sold_by' => $user->id,
+                    'stock_operation_id' => $stock_operation->id
                 ]
             );
+
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
             return [false, 'Imposible completar la venta en estos momentos. Contacte al administrador'];

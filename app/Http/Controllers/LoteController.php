@@ -9,7 +9,9 @@ use Carbon\Carbon;
 
 class LoteController extends Controller
 {
-    const relations = ['lotes.tags', 'lotes.tagsAll', 'category','lotes.product'];
+    const relations = ['lotes.tags','category', 'lotes.product'];
+
+//    const relations = ['lotes.tags', 'lotes.tagsAll', 'category','lotes.product'];
 
     public function manageStock($product, $user, $quantity, $cost_price, $sell_price, $buy_date = null)
     {

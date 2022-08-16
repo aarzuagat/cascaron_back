@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    const relations = ['category', 'lotes.tags'];
+    const relations = ['category'];
+//    const relations = ['category', 'lotes.tags'];
 
 
     public function index()
@@ -132,10 +133,10 @@ class ProductController extends Controller
             'quantity' => $quantity,
             'lote_id' => $lote_id,
             'tag' => "Lote-{$lote_id}",
-            'deleted_at' => Carbon::now(),
             'sold_by' => auth()->user()->id,
         ];
-        StockOperation::create($data);
+        $stock_operation = StockOperation::create($data);
+        return $stock_operation;
     }
 
     public function downloadTag(Request $request)
