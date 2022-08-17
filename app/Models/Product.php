@@ -39,4 +39,8 @@ class Product extends Model
     {
         return $this->quantity();
     }
+
+    public function incidents(){
+        return $this->belongsToMany(Incident::class,'incident_product');
+    }
 }

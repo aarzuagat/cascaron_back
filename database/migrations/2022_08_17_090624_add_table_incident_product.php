@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncidentsTable extends Migration
+class AddTableIncidentProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateIncidentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('incidents', function (Blueprint $table) {
-            $table->id();
-            $table->string('author');
-            $table->text('description');
-            $table->foreignId('user_id')->constrained();
-            $table->timestamps();
+        Schema::create('incident_product', function (Blueprint $table) {
+            $table->foreignId('incident_id')->constrained();
+            $table->foreignId('product_id')->constrained();
         });
     }
 
@@ -29,6 +26,6 @@ class CreateIncidentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incidents');
+        Schema::dropIfExists('incident_product');
     }
 }

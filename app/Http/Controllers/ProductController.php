@@ -148,4 +148,10 @@ class ProductController extends Controller
         $pdf = PDF::loadView('pdf.tags', compact('lote'));
         return $pdf->download("lote-{$lote->id}.pdf");
     }
+
+    public function allLite()
+    {
+        $products = Product::whereIsActive(true)->latest()->get();
+        return response(['data' => $products]);
+    }
 }
