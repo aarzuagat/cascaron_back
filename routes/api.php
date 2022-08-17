@@ -49,6 +49,7 @@ Route::group([
     Route::apiResource('notifications', NotificationController::class)->except('index');
     Route::apiResource('lotes', LoteController::class);
     Route::apiResource('stock-operation', StockOperationController::class);
+    Route::post('stock-operation-all', [StockOperationController::class, 'find']);
     Route::post('sellProduct', [ProductController::class, 'sellProduct']);
     Route::post('tag-download', [ProductController::class, 'downloadTag']);
     Route::post('stock-operation-cancel', [StockOperationController::class, 'cancel']);

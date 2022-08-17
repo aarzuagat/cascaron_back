@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    const relations = ['category'];
+    const relations = ['category','lotes'];
 //    const relations = ['category', 'lotes.tags'];
 
 

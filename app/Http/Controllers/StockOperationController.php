@@ -128,9 +128,27 @@ class StockOperationController extends Controller
         return response(['data' => $operations->get()]);
     }
 
-    public function createDate($stringDate, $format = 'd/m/Y')
+    public function createDate($stringDate, $just_date = false, $format = 'd/m/Y')
     {
         $date = date_create_from_format($format, $stringDate);
-        return date_format($date, 'Y-m-d H:i');
+        if ($just_date)
+            return date_format($date, 'Y-m-d');
+        else
+            return date_format($date, 'Y-m-d H:i');
+    }
+
+    public function find(StockOperationRequest $request)
+    {
+        if ($request->date)
+            $date = $this->createDate($request->date, true);
+        else
+            $date = $this->createDate(date('d/m/Y'), true);
+
+        $stockoperations = StockOperation::with(self::relations)
+            ->whereNull('deleted_at')
+            ->whereDate('created_at', $date)
+            ->latest()->get();
+
+        return response(['data' => $stockoperations]);
     }
 }
