@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{config('app.name')}}</title>
-    <link href=/css/vendor.0225384b.css rel=stylesheet>
-    <link href=/css/app.85c2c931.css rel=stylesheet>
+    <link href=/css/vendor.8c4a6e95.css rel=stylesheet>
+    <link href=/css/app.5490d2a6.css rel=stylesheet>
     <link rel="icon" href="{{ asset('/logo.png') }}" type="image/x-icon"/>
     <style type="text/css">
         [v-cloak] > * {
@@ -18,7 +18,7 @@
 <body>
 <div id="q-app" v-cloak>
 </div>
-<script src=/js/vendor.9f6dbb2b.js></script>
-<script src=/js/app.2df27356.js></script>
+<script src=/js/vendor.c7995a32.js></script>
+<script src=/js/app.74ad2029.js></script>
 </body>
 </html>

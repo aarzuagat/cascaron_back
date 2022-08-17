@@ -52,6 +52,7 @@ Route::group([
     Route::post('sellProduct', [ProductController::class, 'sellProduct']);
     Route::post('tag-download', [ProductController::class, 'downloadTag']);
     Route::post('stock-operation-cancel', [StockOperationController::class, 'cancel']);
+    Route::post('filter-operations', [StockOperationController::class, 'filterOperations']);
 });
 
 Route::get('categories', [CategoryController::class, 'index']);
@@ -60,4 +61,4 @@ Route::get('roles', [RoleController::class, 'index']);
 Route::get('orders', [OrderController::class, 'index']);
 Route::get('products', [ProductController::class, 'index']);
 Route::get('notifications', [NotificationController::class, 'index']);
-Route::apiResource('stocktraces', 'StockTraceController'); 
+Route::apiResource('stocktraces', 'StockTraceController');

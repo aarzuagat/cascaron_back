@@ -54,7 +54,6 @@ class StockOperationController extends Controller
 
     public function cancel(StockOperationRequest $request)
     {
-
         $is_partial = $request->is_partial ?? false;
         $operation = StockOperation::with('tags')->findOrFail($request->operation);
         $quantity = $operation->quantity;
@@ -98,7 +97,7 @@ class StockOperationController extends Controller
                     'deleted_at' => null,
                     'stock_operation_id' => null
                 ]);
-            }else{
+            } else {
                 $lote->increment('quantity', $quantity);
             }
             $description = "Cancela el pedido $operation->id completamente con $quantity unidades";
@@ -112,5 +111,26 @@ class StockOperationController extends Controller
             $operation->save();
         }
         return response(['data' => true]);
+    }
+
+    public function filterOperations(StockOperationRequest $request)
+    {
+        $start_date = $request->start;
+        if ($start_date) {
+            $start_date = $this->createDate($start_date);
+        }
+        $end_date = $request->end;
+        if ($end_date) {
+            $end_date = $this->createDate($end_date);
+        }
+        $operations = StockOperation::with('lote.product')->whereNull('deleted_at')
+            ->whereBetween('created_at', [$start_date, $end_date]);
+        return response(['data' => $operations->get()]);
+    }
+
+    public function createDate($stringDate, $format = 'd/m/Y')
+    {
+        $date = date_create_from_format($format, $stringDate);
+        return date_format($date, 'Y-m-d H:i');
     }
 }
