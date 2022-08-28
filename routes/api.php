@@ -57,9 +57,12 @@ Route::group([
     Route::post('stock-operation-all', [StockOperationController::class, 'find']);
     Route::post('sellProduct', [ProductController::class, 'sellProduct']);
     Route::get('products-lite', [ProductController::class, 'allLite']);
+    Route::get('products-withTags', [ProductController::class, 'withTags']);
     Route::post('tag-download', [ProductController::class, 'downloadTag']);
     Route::post('stock-operation-cancel', [StockOperationController::class, 'cancel']);
     Route::post('filter-operations', [StockOperationController::class, 'filterOperations']);
+    Route::post('stock-operation-change', [StockOperationController::class, 'change']);
+    Route::post('stock-operation-delete-item', [StockOperationController::class, 'deleteItem']);
 
 });
 

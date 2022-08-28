@@ -14,7 +14,7 @@ class AddStockOperationToTags extends Migration
     public function up()
     {
         Schema::table('tags', function (Blueprint $table) {
-            $table->foreignId('stock_operation_id')->nullable()->constrained();
+            $table->foreignId('stock_operation_id')->nullable()->constrained()->nullOnDelete();
         });
     }
 

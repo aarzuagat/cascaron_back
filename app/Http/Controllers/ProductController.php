@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    const relations = ['category','lotes'];
+    const relations = ['category', 'lotes.tags'];
+
 //    const relations = ['category', 'lotes.tags'];
 
 
@@ -86,7 +87,7 @@ class ProductController extends Controller
     public function sellProduct(SellRequest $request)
     {
         $user = auth()->user();
-        $product = Product::findOrFail($request->product['id']);
+        $product = Product::findOrFail($request->product['id'] ?? $request->product);
         if ($product['tag'] === 'Todas las unidades')
             list($ended, $message) = (new TagController())->sellProductByTag($request->sell, $user);
         else {
@@ -153,5 +154,11 @@ class ProductController extends Controller
     {
         $products = Product::whereIsActive(true)->latest()->get();
         return response(['data' => $products]);
+    }
+
+    public function withTags()
+    {
+        $products = Product::with('lotes.tags')->whereIsActive(true)->latest()->get();
+        return response(['data' => $products], 200);
     }
 }

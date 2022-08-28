@@ -16,9 +16,9 @@ class CreateStockoperationsTable extends Migration
         Schema::create('stock_operations', function (Blueprint $table) {
             $table->id();
             $table->double('quantity');
-            $table->foreignId('lote_id')->constrained();
+            $table->foreignId('lote_id')->nullable()->constrained();
             $table->string('tag');
-            $table->dateTime('deleted_at')->nullable();
+            $table->dateTime('canceled_at')->nullable();
             $table->foreignId('sold_by')->nullable()->constrained('users');
             $table->timestamps();
         });

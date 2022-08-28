@@ -106,6 +106,7 @@ class TagController extends Controller
 
             Tag::whereIn('id', $filtered)->update(
                 [
+                    'deleted_at' => Carbon::now(),
                     'sold_by' => $user->id,
                     'stock_operation_id' => $stock_operation->id
                 ]

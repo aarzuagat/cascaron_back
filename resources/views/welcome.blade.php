@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{config('app.name')}}</title>
     <link href=/css/vendor.8c4a6e95.css rel=stylesheet>
-    <link href=/css/app.5490d2a6.css rel=stylesheet>
+    <link href=/css/app.4d229770.css rel=stylesheet>
     <link rel="icon" href="{{ asset('/logo.png') }}" type="image/x-icon"/>
     <style type="text/css">
         [v-cloak] > * {
@@ -18,7 +18,7 @@
 <body>
 <div id="q-app" v-cloak>
 </div>
-<script src=/js/vendor.c7995a32.js></script>
-<script src=/js/app.74ad2029.js></script>
+<script src=/js/vendor.cfa4c83b.js></script>
+<script src=/js/app.8e7636e3.js></script>
 </body>
 </html>

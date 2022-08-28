@@ -16,8 +16,9 @@ class CreateStocktracesTable extends Migration
         Schema::create('stock_traces', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('stock_operation_id')->constrained()->cascadeOnDelete();
             $table->string('action');
-            $table->string('details');
+            $table->string('details')->nullable();
             $table->timestamps();
         });
     }
