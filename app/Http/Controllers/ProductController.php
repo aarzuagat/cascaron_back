@@ -144,10 +144,22 @@ class ProductController extends Controller
     {
         set_time_limit(10000);
         $data = $request->all();
-        $lote = Lote::with(['tagsAll', 'product', 'creator'])->findOrFail($data['lote_id']);
+        $lote = [];
+        $view = 'pdf.tags';
+        $var = 'lote';
+        if (isset($data['lote_id'])) {
+            $lote = Lote::with(['tagsAll', 'product', 'creator'])->findOrFail($data['lote_id']);
+            $name = "lote-{$lote->id}.pdf";
+        }
+        if (isset($data['product_id'])){
+            $lotes = Lote::with(['tagsAll', 'product', 'creator'])->where('product_id', $data['product_id'])->get();
+            $name = "lotes.pdf";
+            $view = 'pdf.tagsMultiple';
+            $var = 'lotes';
+        }
 
-        $pdf = PDF::loadView('pdf.tags', compact('lote'));
-        return $pdf->download("lote-{$lote->id}.pdf");
+        $pdf = PDF::loadView($view, compact($var));
+        return $pdf->download("lotes-$name.pdf");
     }
 
     public function allLite()
