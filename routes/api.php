@@ -43,32 +43,11 @@ Route::group([
     'prefix' => '',
 
 ], function ($router) {
-    Route::apiResource('categories', CategoryController::class)->except('index');
-    Route::apiResource('tags', TagController::class)->except('index');
     Route::apiResource('roles', RoleController::class)->except('index');
-    Route::apiResource('orders', OrderController::class)->except('index');
-    Route::apiResource('products', ProductController::class)->except('index');
     Route::apiResource('notifications', NotificationController::class)->except('index');
-    Route::apiResource('lotes', LoteController::class);
-    Route::apiResource('stock-operation', StockOperationController::class);
-    Route::apiResource('stocktraces', StockTraceController::class);
-    Route::apiResource('incidents', IncidentController::class);
-    Route::post('incidents-filter', [IncidentController::class,'filter']);
-    Route::post('stock-operation-all', [StockOperationController::class, 'find']);
-    Route::post('sellProduct', [ProductController::class, 'sellProduct']);
-    Route::get('products-lite', [ProductController::class, 'allLite']);
-    Route::get('products-withTags', [ProductController::class, 'withTags']);
-    Route::post('tag-download', [ProductController::class, 'downloadTag']);
-    Route::post('stock-operation-cancel', [StockOperationController::class, 'cancel']);
-    Route::post('filter-operations', [StockOperationController::class, 'filterOperations']);
-    Route::post('stock-operation-change', [StockOperationController::class, 'change']);
-    Route::post('stock-operation-delete-item', [StockOperationController::class, 'deleteItem']);
 
 });
 
-Route::get('categories', [CategoryController::class, 'index']);
-Route::get('tags', [TagController::class, 'index']);
 Route::get('roles', [RoleController::class, 'index']);
-Route::get('orders', [OrderController::class, 'index']);
-Route::get('products', [ProductController::class, 'index']);
 Route::get('notifications', [NotificationController::class, 'index']);
+Route::apiResource('telegrammessages', 'TelegramMessageController'); 

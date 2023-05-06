@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 Route::get('resetbd',[AuthController::class,'resetBD']);
-Route::get('/storage{any}')->where('any', '.*');
 Route::get('{any}', function () {
     return view('welcome');
 })->where('any', '^(?!api).*$');
